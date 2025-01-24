@@ -1,0 +1,26 @@
+{
+    "number": 1,
+    "name": "Fruits",
+    "combinations": [
+      {
+        "words": ["APPLE", "BANANA", "ORANGE", "GRAPE"],
+        "category": "Common Fruits",
+        "color": "yellow"
+      },
+      {
+        "words": ["KIWI", "MANGO", "PEACH", "PEAR"],
+        "category": "More Fruits",
+        "color": "green"
+      },
+      {
+        "words": ["PLUM", "LEMON", "LIME", "CHERRY"],
+        "category": "Even More Fruits",
+        "color": "blue"
+      },
+      {
+        "words": ["FIG", "DATE", "MELON", "BERRY"],
+        "category": "Even More Different Fruits",
+        "color": "purple"
+      }
+    ]
+}

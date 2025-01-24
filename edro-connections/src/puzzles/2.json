@@ -1,0 +1,26 @@
+{
+    "number": 2,
+    "name": "Capital Cities",
+    "combinations": [
+      {
+        "words": ["PARIS", "BERLIN", "ROME", "MADRID"],
+        "category": "European Capitals",
+        "color": "yellow"
+      },
+      {
+        "words": ["CAIRO", "NAIROBI", "LAGOS", "RABAT"],
+        "category": "African Capitals",
+        "color": "green"
+      },
+      {
+        "words": ["TOKYO", "SEOUL", "BEIJING", "MANILA"],
+        "category": "Asian Capitals",
+        "color": "blue"
+      },
+      {
+        "words": ["LIMA", "BOGOTA", "BRASILIA", "QUITO"],
+        "category": "South American Capitals",
+        "color": "purple"
+      }
+    ]
+}

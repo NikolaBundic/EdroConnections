@@ -1,0 +1,14 @@
+{
+    "puzzles": [
+      {
+        "number": 1,
+        "name": "Fruits",
+        "file": "1.json"
+      },
+      {
+        "number": 2,
+        "name": "Capital Cities",
+        "file": "2.json"
+      }
+    ]
+  }
