@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { saveGameState, loadGameState, clearGameState } from '../utils/storage';
 import Tile from './Tiles';
 import './Styles.css';
 
@@ -90,6 +91,49 @@ const GameBoard = () => {
       loadPuzzle();
     }
   }, [currentPuzzleNumber]);
+
+  useEffect(() => {
+    if (currentPuzzleNumber) {
+      const loadPuzzle = async () => {
+        try {
+          setLoading(true);
+          setPuzzle(null);
+          setAttempts(4);
+          setSolvedCombinations([]);
+          setSelectedTiles([]);
+          setWords([]);
+          
+          const puzzleData = await import(/* @vite-ignore */ `/src/puzzles/${currentPuzzleNumber}.json`);
+          setPuzzle(puzzleData);
+
+          const savedState = loadGameState(currentPuzzleNumber);
+          if (savedState) {
+            setAttempts(savedState.attempts);
+            setSolvedCombinations(savedState.solvedCombinations);
+          }
+
+          setWords(smartShuffle(puzzleData.combinations));
+          setLoading(false);
+        } catch (error) {
+          console.error('Error loading puzzle:', error);
+          setLoading(false);
+        }
+      };
+
+      loadPuzzle();
+    }
+  }, [currentPuzzleNumber]);
+
+  useEffect(() => {
+    if (currentPuzzleNumber && !loading) {
+      const state = {
+        attempts,
+        solvedCombinations,
+        lastPlayed: new Date().toISOString(),
+      };
+      saveGameState(currentPuzzleNumber, state);
+    }
+  }, [attempts, solvedCombinations, loading]);
 
   if (loading) {
     return <div className="flex justify-center items-center text-black dark:text-gray-300 text-xl">Loading puzzle...</div>;
@@ -185,6 +229,14 @@ const GameBoard = () => {
     return solvedCombinations.some(combo => combo.words.includes(word));
   };
 
+  const getPuzzleStatus = (puzzleNumber) => {
+    const savedState = loadGameState(puzzleNumber);
+    if (!savedState) return 'notStarted';
+    if (savedState.attempts === 0 && savedState.solvedCombinations.length !== 4) return 'failed';
+    if (savedState.solvedCombinations.length === 4) return 'completed';
+    return 'inProgress';
+  };
+
   return (
     <div className="w-full max-w-md mx-auto relative">
       {/* Level and Select */}
@@ -213,31 +265,34 @@ const GameBoard = () => {
                 leaveTo="opacity-0"
               >
                 <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-800 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
-                  {allPuzzles.map((puzzle) => (
-                    <Listbox.Option
-                      key={puzzle.number}
-                      value={puzzle.number}
-                      className={({ active }) =>
-                        `relative cursor-pointer select-none py-2 pl-10 pr-4 ${active
-                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                          : 'text-gray-900 dark:text-gray-200'
-                        }`
-                      }
-                    >
-                      {({ selected }) => (
-                        <>
+                  {allPuzzles.map((puzzle) => {
+                    const status = getPuzzleStatus(puzzle.number);
+                    return (
+                      <Listbox.Option
+                        key={puzzle.number}
+                        value={puzzle.number}
+                        className={({ active }) =>
+                          `relative cursor-pointer select-none py-2 pl-10 pr-4 ${status === 'completed'
+                            ? 'bg-green-200/70 dark:bg-green-900/40'
+                            : status === 'failed'
+                              ? 'bg-red-200/70 dark:bg-red-900/40'
+                              : active
+                                ? 'bg-gray-100 dark:bg-gray-700'
+                                : ''
+                          } ${active
+                            ? 'text-gray-900 dark:text-white'
+                            : 'text-gray-900 dark:text-gray-200'
+                          }`
+                        }
+                      >
+                        {({ selected }) => (
                           <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
                             #{puzzle.number} - {puzzle.name}
                           </span>
-                          {selected && (
-                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-black dark:text-white">
-                              ✓
-                            </span>
-                          )}
-                        </>
-                      )}
-                    </Listbox.Option>
-                  ))}
+                        )}
+                      </Listbox.Option>
+                    );
+                  })}
                 </Listbox.Options>
               </Transition>
             </div>
@@ -286,16 +341,16 @@ const GameBoard = () => {
         <div className="text-gray-700 dark:text-gray-300">Mistakes Remaining:</div>
         {[...Array(4)].map((_, index) => (
           <div
-          key={index}
-          className={`
+            key={index}
+            className={`
             w-3 h-3 rounded-full
             transition-all duration-300
-            ${index < attempts 
-              ? 'bg-black dark:bg-white' 
-              : 'bg-gray-300 dark:bg-gray-700'
-            }
+            ${index < attempts
+                ? 'bg-black dark:bg-white'
+                : 'bg-gray-300 dark:bg-gray-700'
+              }
           `}
-        />
+          />
         ))}
       </div>
 
