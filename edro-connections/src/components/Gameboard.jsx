@@ -92,12 +92,12 @@ const GameBoard = () => {
   }, [currentPuzzleNumber]);
 
   if (loading) {
-    return <div className="flex justify-center items-center text-black text-xl">Loading puzzle...</div>;
+    return <div className="flex justify-center items-center text-black dark:text-gray-300 text-xl">Loading puzzle...</div>;
   }
 
   const getCategoryColorClass = (color) => {
     const colorClasses = {
-      yellow: 'bg-yellow-400',
+      yellow: 'bg-yellow-600',
       green: 'bg-green-500',
       blue: 'bg-blue-400',
       purple: 'bg-purple-500'
@@ -190,16 +190,18 @@ const GameBoard = () => {
       {/* Level and Select */}
       <div className="flex items-center gap-2 mb-6">
         <div className="flex items-center gap-2">
-          <span className="text-2xl text-black m-1">{puzzle.name}</span>
+          <span className="text-2xl text-black dark:text-gray-300 m-1">{puzzle.name}</span>
         </div>
         <div className="ml-auto w-48 m-1">
           <Listbox value={currentPuzzleNumber} onChange={setCurrentPuzzleNumber}>
             <div className="relative">
-              <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-white py-2 pl-3 pr-10 text-left border border-gray-300 hover:border-gray-400">
-                <span className="block truncate">#{currentPuzzleNumber} Puzzle</span>
+              <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-white dark:bg-gray-800 py-2 pl-3 pr-10 text-left border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500">
+                <span className="block truncate text-gray-900 dark:text-white">
+                  Puzzle #{currentPuzzleNumber}
+                </span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
-                    className="h-5 w-5 text-gray-400"
+                    className="h-5 w-5 text-gray-400 dark:text-gray-500"
                     aria-hidden="true"
                   />
                 </span>
@@ -210,13 +212,15 @@ const GameBoard = () => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-800 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
                   {allPuzzles.map((puzzle) => (
                     <Listbox.Option
                       key={puzzle.number}
                       value={puzzle.number}
                       className={({ active }) =>
-                        `relative cursor-pointer select-none py-2 pl-10 pr-4 ${active ? 'bg-gray-100 text-black' : 'text-gray-900'
+                        `relative cursor-pointer select-none py-2 pl-10 pr-4 ${active
+                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                          : 'text-gray-900 dark:text-gray-200'
                         }`
                       }
                     >
@@ -226,7 +230,7 @@ const GameBoard = () => {
                             #{puzzle.number} - {puzzle.name}
                           </span>
                           {selected && (
-                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-black">
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-black dark:text-white">
                               ✓
                             </span>
                           )}
@@ -241,7 +245,7 @@ const GameBoard = () => {
         </div>
       </div>
 
-      <hr className="border-black border-t-2 mb-4 ml-1 mr-1" />
+      <hr className="border-black dark:border-gray-300 border-t-2 mb-4 ml-1 mr-1" />
 
       {/* Solved Combinations */}
       {solvedCombinations.map((combo, index) => (
@@ -279,19 +283,19 @@ const GameBoard = () => {
 
       {/* Mistakes Remaining Dots */}
       <div className="flex justify-center items-center gap-2 mb-4">
-        <div className="text-gray-700">Mistakes Remaining:</div>
+        <div className="text-gray-700 dark:text-gray-300">Mistakes Remaining:</div>
         {[...Array(4)].map((_, index) => (
           <div
-            key={index}
-            className={`
-              w-3 h-3 rounded-full
-              transition-all duration-300
-              ${index < attempts
-                ? 'bg-black'
-                : 'bg-gray-300'
-              }
-            `}
-          />
+          key={index}
+          className={`
+            w-3 h-3 rounded-full
+            transition-all duration-300
+            ${index < attempts 
+              ? 'bg-black dark:bg-white' 
+              : 'bg-gray-300 dark:bg-gray-700'
+            }
+          `}
+        />
         ))}
       </div>
 
@@ -312,7 +316,7 @@ const GameBoard = () => {
             active:scale-95
             ${isGameOver
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-blue-500 hover:bg-blue-600 text-white cursor-pointer'
+              : 'bg-black dark:bg-gray-800 hover:bg-gray-800 hover:text-white dark:hover:dark:bg-gray-200 text-white dark:hover:text-gray-800 cursor-pointer'
             }
           `}
         >
@@ -332,7 +336,7 @@ const GameBoard = () => {
             hover:shadow-lg
             active:scale-95
             ${selectedTiles.length > 0 && !isGameOver
-              ? 'bg-yellow-500 hover:bg-yellow-600 text-white cursor-pointer'
+              ? 'bg-black dark:bg-gray-800 hover:bg-gray-800 hover:text-white dark:hover:dark:bg-gray-200 text-white dark:hover:text-gray-800 cursor-pointer'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
           `}
         >
@@ -352,7 +356,7 @@ const GameBoard = () => {
             hover:shadow-lg
             active:scale-95
             ${selectedTiles.length === 4 && !isGameOver
-              ? 'bg-green-500 hover:bg-green-600 text-white cursor-pointer'
+              ? 'bg-black dark:bg-gray-800 hover:bg-gray-800 hover:text-white dark:hover:dark:bg-gray-200 text-white dark:hover:text-gray-800 cursor-pointer'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
           `}
         >
@@ -362,11 +366,11 @@ const GameBoard = () => {
 
       {/* Game Over Message */}
       {isGameOver && (
-        <div className="text-center mt-6 p-4 bg-gray-100 rounded-lg">
-          <div className="text-xl font-bold text-gray-800 mb-2">
+        <div className="text-center mt-6 p-4 bg-gray-100 dark:bg-gray-900 rounded-lg">
+          <div className="text-xl font-bold text-gray-800 dark:text-gray-300 mb-2">
             Game Over!
           </div>
-          <div className="text-gray-600">
+          <div className="text-gray-600 dark:text-gray-500">
             {solvedCombinations.length === puzzle.combinations.length
               ? 'Congratulations! You found all groups!'
               : `You found ${solvedCombinations.length} out of ${puzzle.combinations.length} groups.`}
@@ -384,10 +388,10 @@ const GameBoard = () => {
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 translate-y-full'}
           ${notification.type === 'success'
-            ? 'bg-green-500'
+            ? 'bg-green-600'
             : notification.type === 'warning'
-              ? 'bg-yellow-500'
-              : 'bg-red-500'}
+              ? 'bg-yellow-600'
+              : 'bg-red-600'}
           text-white
         `}
       >
