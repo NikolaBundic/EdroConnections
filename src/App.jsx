@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import GameBoard from './components/GameBoard';
+import GameBoard from './components/Gameboard';
 import DarkModeToggle from './components/DarkModeToggle';
 import './App.css'
 
