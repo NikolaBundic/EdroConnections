@@ -15,6 +15,7 @@ const GameBoard = () => {
   const [notification, setNotification] = useState({ message: '', type: '', show: false });
   const [allPuzzles, setAllPuzzles] = useState([]);
   const [currentPuzzleNumber, setCurrentPuzzleNumber] = useState(null);
+  const [isRevealing, setIsRevealing] = useState(false);
 
   const shuffleArray = (array) => {
     const newArray = [...array];
@@ -50,6 +51,25 @@ const GameBoard = () => {
     }
 
     return shuffled.map(item => item.word);
+  };
+
+  const startReveal = async () => {
+    setIsRevealing(true);
+    setSelectedTiles([]);
+
+    const unsolvedCombinations = puzzle.combinations.filter(
+      combo => !solvedCombinations.some(
+        solved => JSON.stringify(solved.words.sort()) === JSON.stringify(combo.words.sort())
+      )
+    );
+
+    for (let i = 0; i < unsolvedCombinations.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setSolvedCombinations(prev => [...prev, unsolvedCombinations[i]]);
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+    setIsRevealing(false);
   };
 
   useEffect(() => {
@@ -102,7 +122,7 @@ const GameBoard = () => {
           setSolvedCombinations([]);
           setSelectedTiles([]);
           setWords([]);
-          
+
           const puzzleData = await import(/* @vite-ignore */ `/src/puzzles/${currentPuzzleNumber}.json`);
           setPuzzle(puzzleData);
 
@@ -210,20 +230,24 @@ const GameBoard = () => {
         showNotification(`Correct! ${matchingCombination.category}!`, 'success');
         setSelectedTiles([]);
       }
-    } else if (oneAwayMatch) {
+    }else if (oneAwayMatch && attempts > 1) {
       setAttempts(attempts - 1);
       showNotification('One away...', 'warning');
-    } else {
-      setAttempts(attempts - 1);
-      if (attempts - 1 <= 0) {
-        showNotification('Game Over! No more attempts remaining.', 'error');
+    }else {
+      const newAttempts = attempts - 1;
+      setAttempts(newAttempts);
+
+      if (newAttempts === 0) {
+        showNotification('Game Over! Revealing solutions...', 'error');
+        startReveal();
       } else {
-        showNotification(`Wrong combination. ${attempts - 1} attempts remaining.`, 'error');
+        showNotification(`Wrong combination. ${newAttempts} attempts remaining.`, 'error');
       }
     }
   };
 
-  const isGameOver = attempts <= 0 || solvedCombinations.length === puzzle.combinations.length;
+  const isGameOver = (attempts <= 0 && !isRevealing) || solvedCombinations.length === puzzle.combinations.length;
+  const isGameWon = solvedCombinations.length === puzzle.combinations.length && attempts > 0;
 
   const isWordInSolvedCombination = (word) => {
     return solvedCombinations.some(combo => combo.words.includes(word));
@@ -232,7 +256,7 @@ const GameBoard = () => {
   const getPuzzleStatus = (puzzleNumber) => {
     const savedState = loadGameState(puzzleNumber);
     if (!savedState) return 'notStarted';
-    if (savedState.attempts === 0 && savedState.solvedCombinations.length !== 4) return 'failed';
+    if (savedState.attempts === 0) return 'failed';
     if (savedState.solvedCombinations.length === 4) return 'completed';
     return 'inProgress';
   };
@@ -307,15 +331,18 @@ const GameBoard = () => {
         <div
           key={`solved-${index}`}
           className={`
-            w-full 
-            mb-2 
-            p-4 sm:p-6
-            ${getCategoryColorClass(combo.color)}
-            text-white 
-            rounded-lg 
-            shadow-md
-            cursor-default
-          `}
+      w-full 
+      mb-2 
+      p-4 sm:p-6
+      ${getCategoryColorClass(combo.color)}
+      text-white 
+      rounded-lg 
+      shadow-md
+      cursor-default
+      transition-all
+      duration-500
+      ${isRevealing ? 'animate-fadeIn' : ''}
+    `}
         >
           <div className="font-bold mb-1">{combo.category}</div>
           <div className="text-sm">{combo.words.join(' • ')}</div>
@@ -419,16 +446,30 @@ const GameBoard = () => {
         </button>
       </div>
 
-      {/* Game Over Message */}
-      {isGameOver && (
+      {isGameOver && !isRevealing && (
         <div className="text-center mt-6 p-4 bg-gray-100 dark:bg-gray-900 rounded-lg">
-          <div className="text-xl font-bold text-gray-800 dark:text-gray-300 mb-2">
+          <div className="text-xl font-bold text-gray-800 dark:text-white mb-2">
             Game Over!
           </div>
-          <div className="text-gray-600 dark:text-gray-500">
-            {solvedCombinations.length === puzzle.combinations.length
+          <div className="text-gray-600 dark:text-gray-400">
+            {isGameWon
               ? 'Congratulations! You found all groups!'
-              : `You found ${solvedCombinations.length} out of ${puzzle.combinations.length} groups.`}
+              : attempts <= 0
+                ? 'Out of attempts! Better luck next time!'
+                : `You found ${solvedCombinations.length} out of ${puzzle.combinations.length} groups.`
+            }
+          </div>
+        </div>
+      )}
+
+      {/* Revealing Message */}
+      {isRevealing && (
+        <div className="text-center mt-6 p-4 bg-gray-100 dark:bg-gray-900 rounded-lg">
+          <div className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+            Revealing Solutions...
+          </div>
+          <div className="text-gray-600 dark:text-gray-400">
+            Watch as each category is revealed
           </div>
         </div>
       )}
