@@ -72,6 +72,26 @@ const GameBoard = () => {
     setIsRevealing(false);
   };
 
+  const generateShareableText = () => {
+    const categories = solvedCombinations.map(combo => {
+      const color = combo.color;
+      const squares = {
+        yellow: '🟨',
+        green: '🟩',
+        blue: '🟦',
+        purple: '🟪'
+      }[color] || '⬜';
+      return squares.repeat(4);
+    }).join('\n');
+
+    const failedAttempts = '❌'.repeat(4 - attempts);
+    const reverseSweep = solvedCombinations.length === 4 && attempts == 4 && solvedCombinations[0].color === 'purple' && 
+      solvedCombinations[1].color === 'blue' && solvedCombinations[2].color === 'green' ? '\nReverse Sweep!!!' : '';
+
+    const info = 'Play EdroConnections on:\nhttps://edroconnections.pages.dev/\n\n';
+    return `${info}${categories}\n${failedAttempts}${reverseSweep}`;
+  };
+
   useEffect(() => {
     const loadPuzzleIndex = async () => {
       try {
@@ -230,10 +250,10 @@ const GameBoard = () => {
         showNotification(`Correct! ${matchingCombination.category}!`, 'success');
         setSelectedTiles([]);
       }
-    }else if (oneAwayMatch && attempts > 1) {
+    } else if (oneAwayMatch && attempts > 1) {
       setAttempts(attempts - 1);
       showNotification('One away...', 'warning');
-    }else {
+    } else {
       const newAttempts = attempts - 1;
       setAttempts(newAttempts);
 
@@ -447,7 +467,7 @@ const GameBoard = () => {
       </div>
 
       {isGameOver && !isRevealing && (
-        <div className="text-center mt-6 p-4 bg-gray-100 dark:bg-gray-900 rounded-lg">
+        <div className="text-center mt-6 p-4  rounded-lg">
           <div className="text-xl font-bold text-gray-800 dark:text-white mb-2">
             Game Over!
           </div>
@@ -459,12 +479,37 @@ const GameBoard = () => {
                 : `You found ${solvedCombinations.length} out of ${puzzle.combinations.length} groups.`
             }
           </div>
+          {isGameWon && (
+            <button
+              onClick={() => {
+                const shareableText = generateShareableText();
+                navigator.clipboard.writeText(shareableText).then(() => {
+                  showNotification('Copied to clipboard!', 'success');
+                });
+              }}
+              className={`
+                mt-4
+                font-bold 
+                py-2 
+                px-4 
+                rounded-lg
+                transition-all
+                duration-200
+                shadow-md
+                hover:shadow-lg
+                active:scale-95
+                bg-black dark:bg-gray-800 hover:bg-gray-800 hover:text-white dark:hover:dark:bg-gray-200 text-white dark:hover:text-gray-800 cursor-pointer
+              `}
+            >
+              Share Results
+            </button>
+          )}
         </div>
       )}
 
       {/* Revealing Message */}
       {isRevealing && (
-        <div className="text-center mt-6 p-4 bg-gray-100 dark:bg-gray-900 rounded-lg">
+        <div className="text-center mt-6 p-4 rounded-lg">
           <div className="text-xl font-bold text-gray-800 dark:text-white mb-2">
             Revealing Solutions...
           </div>
