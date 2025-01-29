@@ -85,7 +85,7 @@ const GameBoard = () => {
     }).join('\n');
 
     const failedAttempts = '❌'.repeat(4 - attempts);
-    const reverseSweep = solvedCombinations.length === 4 && attempts == 4 && solvedCombinations[0].color === 'purple' && 
+    const reverseSweep = solvedCombinations.length === 4 && attempts == 4 && solvedCombinations[0].color === 'purple' &&
       solvedCombinations[1].color === 'blue' && solvedCombinations[2].color === 'green' ? '\n🎉 Reverse Sweep!!! 🎉' : '';
 
     const info = 'Play EdroConnections on:\nhttps://edroconnections.pages.dev/\n\n';
@@ -97,7 +97,8 @@ const GameBoard = () => {
   useEffect(() => {
     const loadPuzzleIndex = async () => {
       try {
-        const indexData = await import('../puzzles/index.json');
+        const response = await fetch('/puzzles/index.json');
+        const indexData = await response.json();
         const puzzles = indexData.puzzles;
         setAllPuzzles(puzzles);
         const latestPuzzle = Math.max(...puzzles.map(p => p.number));
@@ -115,18 +116,21 @@ const GameBoard = () => {
       const loadPuzzle = async () => {
         try {
           setLoading(true);
-          setSelectedTiles([]);
-          setAttempts(4);
-          setSolvedCombinations([]);
-          setNotification({ message: '', type: '', show: false });
-
-          const puzzleData = await import(`../puzzles/${currentPuzzleNumber}.json`);
+          const response = await fetch(`/puzzles/${currentPuzzleNumber}.json`);
+          const puzzleData = await response.json();
           setPuzzle(puzzleData);
-          const shuffledWords = smartShuffle(puzzleData.combinations);
-          setWords(shuffledWords);
+
+          const savedState = loadGameState(currentPuzzleNumber);
+          if (savedState) {
+            setAttempts(savedState.attempts);
+            setSolvedCombinations(savedState.solvedCombinations);
+          }
+
+          setWords(smartShuffle(puzzleData.combinations));
           setLoading(false);
         } catch (error) {
           console.error('Error loading puzzle:', error);
+          setLoading(false);
         }
       };
 
@@ -145,7 +149,8 @@ const GameBoard = () => {
           setSelectedTiles([]);
           setWords([]);
 
-          const puzzleData = await import(/* @vite-ignore */ `/src/puzzles/${currentPuzzleNumber}.json`);
+          const puzzleData = await fetch(`/puzzles/${currentPuzzleNumber}.json`)
+            .then(r => r.json());
           setPuzzle(puzzleData);
 
           const savedState = loadGameState(currentPuzzleNumber);
