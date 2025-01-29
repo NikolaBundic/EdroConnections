@@ -1,0 +1,26 @@
+{
+    "number": 4,
+    "name": "Day 4",
+    "combinations": [
+      {
+        "words": ["PALM", "CARD", "DREAM", "RUNE"],
+        "category": "Mystical Readings",
+        "color": "yellow"
+      },
+      {
+        "words": ["BRIDGE", "WAR", "GOLF", "SNAP"],
+        "category": "Games Played With Cards",
+        "color": "green"
+      },
+      {
+        "words": ["PICK UP", "GET", "CATCH", "PERCEIVE"],
+        "category": "To Hear Something",
+        "color": "blue"
+      },
+      {
+        "words": ["THOUGHT", "FISH", "ROCK", "LIFE"],
+        "category": "School of _",
+        "color": "purple"
+      }
+    ]
+}

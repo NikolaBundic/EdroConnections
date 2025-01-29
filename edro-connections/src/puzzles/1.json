@@ -1,25 +1,25 @@
 {
     "number": 1,
-    "name": "Fruits",
+    "name": "Day 1",
     "combinations": [
       {
-        "words": ["APPLE", "BANANA", "ORANGE", "GRAPE"],
-        "category": "Common Fruits",
+        "words": ["OMEN", "PREMONITION", "INDICATION", "HARBINGER"],
+        "category": "Signaling Future Events",
         "color": "yellow"
       },
       {
-        "words": ["KIWI", "MANGO", "PEACH", "PEAR"],
-        "category": "More Fruits",
+        "words": ["VIPER", "CHARGER", "CHALLENGER", "DAKOTA"],
+        "category": "Dodge Models",
         "color": "green"
       },
       {
-        "words": ["PLUM", "LEMON", "LIME", "CHERRY"],
-        "category": "Even More Fruits",
+        "words": ["BRIMSTONE", "CORALINE", "PUSH", "DREAMER"],
+        "category": "Films Starring Dakota Fanning",
         "color": "blue"
       },
       {
-        "words": ["FIG", "DATE", "MELON", "BERRY"],
-        "category": "Even More Different Fruits",
+        "words": ["GREAT", "CAESAR", "ALPHABET", "NULL"],
+        "category": "_ Cipher",
         "color": "purple"
       }
     ]

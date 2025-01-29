@@ -1,0 +1,26 @@
+{
+    "number": 5,
+    "name": "Day 5",
+    "combinations": [
+      {
+        "words": ["PITCHFORK", "FIREFLY", "RIOT", "TREEFORT"],
+        "category": "Music Festivals",
+        "color": "yellow"
+      },
+      {
+        "words": ["BLACK", "COUNTRY", "NEW", "ROAD"],
+        "category": "BC,NY",
+        "color": "green"
+      },
+      {
+        "words": ["DREAM", "CHAMBER", "NOISE", "SYNTH"],
+        "category": "Subgenres Of Pop",
+        "color": "blue"
+      },
+      {
+        "words": ["COWBOY", "ATOMIC CLOCK", "CHART #3", "BLACK HELICOPETR"],
+        "category": "Godspeed You Black Emperor Song Parts",
+        "color": "purple"
+      }
+    ]
+}

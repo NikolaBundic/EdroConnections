@@ -2,13 +2,28 @@
     "puzzles": [
       {
         "number": 1,
-        "name": "Fruits",
+        "name": "Day 1",
         "file": "1.json"
       },
       {
         "number": 2,
-        "name": "Capital Cities",
+        "name": "Day 2",
         "file": "2.json"
+      },
+      {
+        "number": 3,
+        "name": "Day 3",
+        "file": "3.json"
+      },
+      {
+        "number": 4,
+        "name": "Day 4",
+        "file": "4.json"
+      },
+      {
+        "number": 5,
+        "name": "Day 5",
+        "file": "5.json"
       }
     ]
   }

@@ -1,0 +1,26 @@
+{
+    "number": 3,
+    "name": "Day 3",
+    "combinations": [
+      {
+        "words": ["CRAFT", "SHELTER", "FIRE", "FORAGE"],
+        "category": "Survival Game Tropes",
+        "color": "yellow"
+      },
+      {
+        "words": ["RAVEN", "EPIC", "BLIZZARD", "ID"],
+        "category": "Major Game Studios",
+        "color": "green"
+      },
+      {
+        "words": ["SHIELD", "SUN", "RED", "DIAMOND"],
+        "category": "Pokémon Games",
+        "color": "blue"
+      },
+      {
+        "words": ["FRAGILE", "SNAKE", "OCELOT", "MAMA"],
+        "category": "Kojima Characters",
+        "color": "purple"
+      }
+    ]
+}

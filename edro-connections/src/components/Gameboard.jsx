@@ -86,10 +86,12 @@ const GameBoard = () => {
 
     const failedAttempts = '❌'.repeat(4 - attempts);
     const reverseSweep = solvedCombinations.length === 4 && attempts == 4 && solvedCombinations[0].color === 'purple' && 
-      solvedCombinations[1].color === 'blue' && solvedCombinations[2].color === 'green' ? '\nReverse Sweep!!!' : '';
+      solvedCombinations[1].color === 'blue' && solvedCombinations[2].color === 'green' ? '\n🎉 Reverse Sweep!!! 🎉' : '';
 
     const info = 'Play EdroConnections on:\nhttps://edroconnections.pages.dev/\n\n';
-    return `${info}${categories}\n${failedAttempts}${reverseSweep}`;
+    const number = currentPuzzleNumber;
+
+    return `${info}Puzzle #${number}\n${categories}\n${failedAttempts}${reverseSweep}`;
   };
 
   useEffect(() => {

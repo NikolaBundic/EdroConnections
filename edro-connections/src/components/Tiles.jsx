@@ -15,6 +15,7 @@ const Tile = ({ text, isSelected, onClick }) => {
           select-none
           aspect-ratio-square
           flex items-center justify-center
+          h-20 sm:h-25
           ${text.length > 8 ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'}
           ${isSelected 
             ? 'bg-black dark:bg-gray-200 text-white dark:text-gray-800 shadow-lg scale-95' 

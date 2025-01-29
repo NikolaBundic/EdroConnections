@@ -1,25 +1,25 @@
 {
     "number": 2,
-    "name": "Capital Cities",
+    "name": "Day 2",
     "combinations": [
       {
-        "words": ["PARIS", "BERLIN", "ROME", "MADRID"],
-        "category": "European Capitals",
+        "words": ["WITCH", "LIGHTHOUSE", "NORTHMAN", "NOSFERATU"],
+        "category": "Robert Eggers Directed",
         "color": "yellow"
       },
       {
-        "words": ["CAIRO", "NAIROBI", "LAGOS", "RABAT"],
-        "category": "African Capitals",
+        "words": ["GIANT", "PSYCHO", "VERTIGO", "DUNE"],
+        "category": "Classic Films",
         "color": "green"
       },
       {
-        "words": ["TOKYO", "SEOUL", "BEIJING", "MANILA"],
-        "category": "Asian Capitals",
+        "words": ["PARASITE", "GLADIATOR", "CHICAGO", "TITANIC"],
+        "category": "Oscar Best Picture Winners",
         "color": "blue"
       },
       {
-        "words": ["LIMA", "BOGOTA", "BRASILIA", "QUITO"],
-        "category": "South American Capitals",
+        "words": ["DYNAMITE", "SHEEP", "ADAM", "PHONE"],
+        "category": "Black _",
         "color": "purple"
       }
     ]
