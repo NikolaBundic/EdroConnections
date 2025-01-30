@@ -24,9 +24,10 @@ function App() {
         </h1>
         <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       </div>
-      <div className="absolute inset-0 flex items-center justify-center pt-20">
+      <div className="flex items-center justify-center pt-20">
         <GameBoard />
       </div>
+      <br />
     </div>
   );
 }
